@@ -1,5 +1,7 @@
 import 'package:flutter/material.dart';
+import 'package:google_nav_bar/google_nav_bar.dart';
 import 'package:screen_vibe/widget/homeContainer.dart';
+import 'package:screen_vibe/widget/navigationBar.dart';
 
 class home_page extends StatelessWidget {
   const home_page({super.key});
@@ -18,6 +20,8 @@ class home_page extends StatelessWidget {
           homeContainer(title:"Watch Again"),
         ],
       ),
+      bottomNavigationBar: navigationBar()
+      
     );
   }
 }
