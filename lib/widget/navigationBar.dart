@@ -35,7 +35,6 @@ class navigationBar extends StatelessWidget {
                   icon: Icons.account_box,
                   text: "Profile"
               ),
-
             ]),
       ),
     );
