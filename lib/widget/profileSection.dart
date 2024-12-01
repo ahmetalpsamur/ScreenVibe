@@ -1,5 +1,4 @@
 import 'package:flutter/material.dart';
-import 'package:screen_vibe/widget/homeContainer.dart';
 
 class profileSection extends StatelessWidget {
   const profileSection({super.key});
@@ -17,12 +16,12 @@ class profileSection extends StatelessWidget {
               //alignment: Alignment.bottomCenter,
               children: [
                 Container(
-                  child: Image(
+                  child: const Image(
                       image: NetworkImage(
                           "https://t4.ftcdn.net/jpg/04/97/86/15/360_F_497861573_EX9cjKXjVLBhbHrawjVK8M3BthLDS5lE.jpg"),
                       fit: BoxFit.fill),
                 ),
-                Padding(
+                const Padding(
                   padding: EdgeInsets.all(2),
                   child: Align(
                     alignment:
@@ -37,7 +36,7 @@ class profileSection extends StatelessWidget {
               ]),
         ),
         Container(
-          child: Column(
+          child: const Column(
             children: [
               Text("Ahmet Alp SAMUR"),
               Text("My Favorite film is blblblblablablabla")

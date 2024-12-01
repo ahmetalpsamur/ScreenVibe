@@ -11,7 +11,7 @@ class profile_page extends StatelessWidget {
   Widget build(BuildContext context) {
     return Scaffold(
       body: ListView(
-        children: [
+        children: const [
           profileSection(),
           homeContainer(title: "My Favorite Films"),
           homeContainer(title: "Liked Films"),
@@ -19,7 +19,7 @@ class profile_page extends StatelessWidget {
           homeContainer(title: "Liste2")
         ],
       ),
-      bottomNavigationBar: navigationBar(),
+      bottomNavigationBar: const navigationBar(),
     );
   }
 }

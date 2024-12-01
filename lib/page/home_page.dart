@@ -1,5 +1,4 @@
 import 'package:flutter/material.dart';
-import 'package:google_nav_bar/google_nav_bar.dart';
 import 'package:screen_vibe/widget/homeContainer.dart';
 import 'package:screen_vibe/widget/navigationBar.dart';
 
@@ -10,7 +9,7 @@ class home_page extends StatelessWidget {
   Widget build(BuildContext context) {
     return Scaffold(
       body: ListView(
-        children: [
+        children: const [
           homeContainer(title:"Popular"),
           homeContainer(title:"Horror"),
           homeContainer(title:"Action"),
@@ -20,7 +19,7 @@ class home_page extends StatelessWidget {
           homeContainer(title:"Watch Again"),
         ],
       ),
-      bottomNavigationBar: navigationBar()
+      bottomNavigationBar: const navigationBar()
       
     );
   }

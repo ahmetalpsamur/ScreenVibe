@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 
-class login_page extends StatelessWidget {
-  const login_page({super.key});
+class register_page extends StatelessWidget {
+  const register_page({super.key});
 
   @override
   Widget build(BuildContext context) {
@@ -17,13 +17,12 @@ class login_page extends StatelessWidget {
               const CircleAvatar(
                 radius: 50.0,
                 backgroundImage: NetworkImage(
-                  "https://image.tmdb.org/t/p/w600_and_h900_bestv2/pB8BM7pdSp6B6Ih7QZ4DrQ3PmJK.jpg",
-                ), // Replace with your logo
+                    "https://image.tmdb.org/t/p/w600_and_h900_bestv2/pB8BM7pdSp6B6Ih7QZ4DrQ3PmJK.jpg"),
               ),
               const SizedBox(height: 20.0),
               // Welcome Text
               const Text(
-                'Welcome Back!',
+                'Create an Account',
                 style: TextStyle(
                   fontSize: 28.0,
                   fontWeight: FontWeight.bold,
@@ -32,13 +31,24 @@ class login_page extends StatelessWidget {
               ),
               const SizedBox(height: 10.0),
               const Text(
-                'Log in to your account',
+                'Sign up to get started',
                 style: TextStyle(
                   fontSize: 16.0,
                   color: Colors.grey,
                 ),
               ),
               const SizedBox(height: 30.0),
+              // Name Field
+              TextField(
+                decoration: InputDecoration(
+                  prefixIcon: const Icon(Icons.person),
+                  labelText: 'Full Name',
+                  border: OutlineInputBorder(
+                    borderRadius: BorderRadius.circular(8.0),
+                  ),
+                ),
+              ),
+              const SizedBox(height: 15.0),
               // Email Field
               TextField(
                 decoration: InputDecoration(
@@ -61,41 +71,41 @@ class login_page extends StatelessWidget {
                   ),
                 ),
               ),
+              const SizedBox(height: 15.0),
+              // Confirm Password Field
+              TextField(
+                obscureText: true,
+                decoration: InputDecoration(
+                  prefixIcon: const Icon(Icons.lock),
+                  labelText: 'Confirm Password',
+                  border: OutlineInputBorder(
+                    borderRadius: BorderRadius.circular(8.0),
+                  ),
+                ),
+              ),
               const SizedBox(height: 20.0),
-              // Login Button
+              // Register Button
               ElevatedButton(
-                onPressed: () {}, // Placeholder for onPressed functionality
+                onPressed: () {}, // Functionality not included
                 style: ElevatedButton.styleFrom(
                   padding: const EdgeInsets.symmetric(vertical: 15.0),
                   minimumSize: const Size(double.infinity, 50),
                 ),
                 child: const Text(
-                  'Login',
+                  'Register',
                   style: TextStyle(fontSize: 16.0),
                 ),
               ),
               const SizedBox(height: 15.0),
-              // Forgot Password Text
-              GestureDetector(
-                onTap: () {}, // Placeholder for onTap functionality
-                child: const Text(
-                  'Forgot Password?',
-                  style: TextStyle(
-                    color: Colors.blue,
-                    decoration: TextDecoration.underline,
-                  ),
-                ),
-              ),
-              const SizedBox(height: 30.0),
-              // Sign Up Text
+              // Already have an account Text
               Row(
                 mainAxisAlignment: MainAxisAlignment.center,
                 children: [
-                  const Text("Don't have an account? "),
+                  const Text("Already have an account? "),
                   GestureDetector(
-                    onTap: () {}, // Placeholder for onTap functionality
+                    onTap: () {}, // Add functionality if needed
                     child: const Text(
-                      'Sign Up',
+                      'Log In',
                       style: TextStyle(
                         color: Colors.blue,
                         fontWeight: FontWeight.bold,

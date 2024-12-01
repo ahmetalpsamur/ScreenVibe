@@ -10,7 +10,7 @@ class navigationBar extends StatelessWidget {
     return Container(
       color: Colors.black,
       child: Padding(
-        padding: EdgeInsets.symmetric(
+        padding: const EdgeInsets.symmetric(
             horizontal: 20,
             vertical: 5
         ),
@@ -20,8 +20,8 @@ class navigationBar extends StatelessWidget {
             color: Colors.white,
             activeColor: Colors.white,
             tabBackgroundColor: Colors.grey.shade900,
-            padding:EdgeInsets.all(15),
-            tabs: [
+            padding:const EdgeInsets.all(15),
+            tabs: const [
 
               GButton(
                 icon: Icons.home,
