@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:screen_vibe/page/home_page.dart';
 import 'package:screen_vibe/page/login_page.dart';
 import 'package:screen_vibe/widget/homeContainer.dart';
 import 'package:screen_vibe/widget/navigationBar.dart';
@@ -13,11 +14,11 @@ class MyApp extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return const MaterialApp(
+    return  MaterialApp(
       // Kendi yaptığın sayfayı direk görmek
       // için home_page yerine login_page yaz
       // öyle test et. Geçişleri sonra yaparız.
-      home: register_page(), //BU KISIMI DEĞİŞTİR.
+      home: home_page(), //BU KISIMI DEĞİŞTİR.
     );
   }
 }
