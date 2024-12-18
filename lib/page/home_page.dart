@@ -19,10 +19,10 @@ class home_page extends StatelessWidget {
       body: ListView(
         children: [
           homeContainer(title:"Popular"),
-          homeContainer(title:"Horror"),
-          homeContainer(title:"Action"),
-          //homeContainer(title:"Comedy"),
-          //homeContainer(title:"Romantic"),
+          homeContainer(title:"Now Playing"),
+          homeContainer(title:"Top Rated"),
+          homeContainer(title:"Upcoming"),
+          homeContainer(title:"Recommendation"),
           //homeContainer(title:"Suggestion"),
           //homeContainer(title:"Watch Again"),
         ],
