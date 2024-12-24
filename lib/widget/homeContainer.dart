@@ -4,6 +4,7 @@ import 'package:flutter/material.dart';
 import 'package:screen_vibe/API/apikey.dart';
 import 'package:screen_vibe/API/apilink.dart';
 import 'package:screen_vibe/model/film.dart';
+import 'package:screen_vibe/page/movie_page.dart';
 import 'package:screen_vibe/page/home_page.dart';
 import 'package:http/http.dart' as http;
 
@@ -220,25 +221,40 @@ class _homeContainerState extends State<homeContainer> {
                     : ListView(
                   scrollDirection: Axis.horizontal,
                   children: popularFilms.map((film) {
-                    return Padding(
-                      padding: const EdgeInsets.all(8.0),
-                      child: Container(
-                        decoration: BoxDecoration(
+                    return GestureDetector(
+                      onTap: () {
+                        Navigator.push(
+                          context,
+                          MaterialPageRoute(
+                            builder: (context) => MoviePage(
+                              movieId: '22', // Ensure you pass the correct type for movieId
+                              username: 'YourUsername', // Replace with the actual username or pass dynamically
+                            ),
+                          ),
+                        );
+                      },
+                      child: Padding(
+                        padding: const EdgeInsets.all(8.0),
+                        child: Container(
+                          decoration: BoxDecoration(
                             shape: BoxShape.rectangle,
                             color: Colors.grey,
-                            borderRadius:
-                            BorderRadiusDirectional.circular(5)),
-                        width: 100,
-                        child: Padding(
-                          padding: EdgeInsets.all(1.0),
-                          child: Image.network(
-                            "https://image.tmdb.org/t/p/w600_and_h900_bestv2/${film.poster_path}",
-                            fit: BoxFit.cover,
+                            borderRadius: BorderRadiusDirectional.circular(5),
+                          ),
+                          width: 100,
+                          child: Padding(
+                            padding: const EdgeInsets.all(1.0),
+                            child: Image.network(
+                              "https://image.tmdb.org/t/p/w600_and_h900_bestv2/${film.poster_path}",
+                              fit: BoxFit.cover,
+                            ),
                           ),
                         ),
                       ),
                     );
                   }).toList(),
+
+
                 ),
               ),
             ],
