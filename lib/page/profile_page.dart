@@ -17,7 +17,6 @@ class profile_page extends StatelessWidget {
 
         ],
       ),
-      bottomNavigationBar: const navigationBar(),
     );
   }
 }

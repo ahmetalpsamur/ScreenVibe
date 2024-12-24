@@ -27,7 +27,7 @@ class home_page extends StatelessWidget {
           //homeContainer(title:"Watch Again"),
         ],
       ),
-      bottomNavigationBar: const navigationBar()
+
       
     );
   }

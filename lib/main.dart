@@ -20,7 +20,8 @@ class MyApp extends StatelessWidget {
       // Kendi yaptığın sayfayı direk görmek
       // için home_page yerine login_page yaz
       // öyle test et. Geçişleri sonra yaparız.
-      home: home_page(), //BU KISIMI DEĞİŞTİR.
+      home: navigationBar(), //BU KISIMI DEĞİŞTİR.
+
     );
   }
 }
