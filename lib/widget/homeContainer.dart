@@ -51,6 +51,7 @@ class _homeContainerState extends State<homeContainer> {
             final film = Film(
               title: eachFilm['title'],
               poster_path: eachFilm['poster_path'],
+              id: eachFilm['id']
             );
             popularFilms.add(film);
           }
@@ -82,6 +83,7 @@ class _homeContainerState extends State<homeContainer> {
             final film = Film(
               title: eachFilm['title'],
               poster_path: eachFilm['poster_path'],
+                id: eachFilm['id']
             );
             nowPlayingFilms.add(film);
           }
@@ -113,6 +115,7 @@ class _homeContainerState extends State<homeContainer> {
             final film = Film(
               title: eachFilm['title'],
               poster_path: eachFilm['poster_path'],
+                id: eachFilm['id']
             );
             topRatedFilms.add(film);
           }
@@ -144,6 +147,7 @@ class _homeContainerState extends State<homeContainer> {
             final film = Film(
               title: eachFilm['title'],
               poster_path: eachFilm['poster_path'],
+                id: eachFilm['id']
             );
             upcomingFilms.add(film);
           }
@@ -175,6 +179,7 @@ class _homeContainerState extends State<homeContainer> {
             final film = Film(
               title: eachFilm['title'],
               poster_path: eachFilm['poster_path'],
+                id: eachFilm['id']
             );
             recommendationFilms.add(film);
           }
@@ -227,7 +232,7 @@ class _homeContainerState extends State<homeContainer> {
                           context,
                           MaterialPageRoute(
                             builder: (context) => MoviePage(
-                              movieId: '22', // Ensure you pass the correct type for movieId
+                              movieId: film.id.toString(), // Ensure you pass the correct type for movieId
                               username: 'YourUsername', // Replace with the actual username or pass dynamically
                             ),
                           ),
@@ -289,25 +294,40 @@ class _homeContainerState extends State<homeContainer> {
                     : ListView(
                   scrollDirection: Axis.horizontal,
                   children: nowPlayingFilms.map((film) {
-                    return Padding(
-                      padding: const EdgeInsets.all(8.0),
-                      child: Container(
-                        decoration: BoxDecoration(
+                    return GestureDetector(
+                      onTap: () {
+                        Navigator.push(
+                          context,
+                          MaterialPageRoute(
+                            builder: (context) => MoviePage(
+                              movieId: film.id.toString(), // Ensure you pass the correct type for movieId
+                              username: 'YourUsername', // Replace with the actual username or pass dynamically
+                            ),
+                          ),
+                        );
+                      },
+                      child: Padding(
+                        padding: const EdgeInsets.all(8.0),
+                        child: Container(
+                          decoration: BoxDecoration(
                             shape: BoxShape.rectangle,
                             color: Colors.grey,
-                            borderRadius:
-                            BorderRadiusDirectional.circular(5)),
-                        width: 100,
-                        child: Padding(
-                          padding: EdgeInsets.all(1.0),
-                          child: Image.network(
-                            "https://image.tmdb.org/t/p/w600_and_h900_bestv2/${film.poster_path}",
-                            fit: BoxFit.cover,
+                            borderRadius: BorderRadiusDirectional.circular(5),
+                          ),
+                          width: 100,
+                          child: Padding(
+                            padding: const EdgeInsets.all(1.0),
+                            child: Image.network(
+                              "https://image.tmdb.org/t/p/w600_and_h900_bestv2/${film.poster_path}",
+                              fit: BoxFit.cover,
+                            ),
                           ),
                         ),
                       ),
                     );
                   }).toList(),
+
+
                 ),
               ),
             ],
@@ -342,25 +362,40 @@ class _homeContainerState extends State<homeContainer> {
                     : ListView(
                   scrollDirection: Axis.horizontal,
                   children: topRatedFilms.map((film) {
-                    return Padding(
-                      padding: const EdgeInsets.all(8.0),
-                      child: Container(
-                        decoration: BoxDecoration(
+                    return GestureDetector(
+                      onTap: () {
+                        Navigator.push(
+                          context,
+                          MaterialPageRoute(
+                            builder: (context) => MoviePage(
+                              movieId: film.id.toString(), // Ensure you pass the correct type for movieId
+                              username: 'YourUsername', // Replace with the actual username or pass dynamically
+                            ),
+                          ),
+                        );
+                      },
+                      child: Padding(
+                        padding: const EdgeInsets.all(8.0),
+                        child: Container(
+                          decoration: BoxDecoration(
                             shape: BoxShape.rectangle,
                             color: Colors.grey,
-                            borderRadius:
-                            BorderRadiusDirectional.circular(5)),
-                        width: 100,
-                        child: Padding(
-                          padding: EdgeInsets.all(1.0),
-                          child: Image.network(
-                            "https://image.tmdb.org/t/p/w600_and_h900_bestv2/${film.poster_path}",
-                            fit: BoxFit.cover,
+                            borderRadius: BorderRadiusDirectional.circular(5),
+                          ),
+                          width: 100,
+                          child: Padding(
+                            padding: const EdgeInsets.all(1.0),
+                            child: Image.network(
+                              "https://image.tmdb.org/t/p/w600_and_h900_bestv2/${film.poster_path}",
+                              fit: BoxFit.cover,
+                            ),
                           ),
                         ),
                       ),
                     );
                   }).toList(),
+
+
                 ),
               ),
             ],
@@ -395,25 +430,40 @@ class _homeContainerState extends State<homeContainer> {
                     : ListView(
                   scrollDirection: Axis.horizontal,
                   children: upcomingFilms.map((film) {
-                    return Padding(
-                      padding: const EdgeInsets.all(8.0),
-                      child: Container(
-                        decoration: BoxDecoration(
+                    return GestureDetector(
+                      onTap: () {
+                        Navigator.push(
+                          context,
+                          MaterialPageRoute(
+                            builder: (context) => MoviePage(
+                              movieId: film.id.toString(), // Ensure you pass the correct type for movieId
+                              username: 'YourUsername', // Replace with the actual username or pass dynamically
+                            ),
+                          ),
+                        );
+                      },
+                      child: Padding(
+                        padding: const EdgeInsets.all(8.0),
+                        child: Container(
+                          decoration: BoxDecoration(
                             shape: BoxShape.rectangle,
                             color: Colors.grey,
-                            borderRadius:
-                            BorderRadiusDirectional.circular(5)),
-                        width: 100,
-                        child: Padding(
-                          padding: EdgeInsets.all(1.0),
-                          child: Image.network(
-                            "https://image.tmdb.org/t/p/w600_and_h900_bestv2/${film.poster_path}",
-                            fit: BoxFit.cover,
+                            borderRadius: BorderRadiusDirectional.circular(5),
+                          ),
+                          width: 100,
+                          child: Padding(
+                            padding: const EdgeInsets.all(1.0),
+                            child: Image.network(
+                              "https://image.tmdb.org/t/p/w600_and_h900_bestv2/${film.poster_path}",
+                              fit: BoxFit.cover,
+                            ),
                           ),
                         ),
                       ),
                     );
                   }).toList(),
+
+
                 ),
               ),
             ],
@@ -448,25 +498,40 @@ class _homeContainerState extends State<homeContainer> {
                     : ListView(
                   scrollDirection: Axis.horizontal,
                   children: recommendationFilms.map((film) {
-                    return Padding(
-                      padding: const EdgeInsets.all(8.0),
-                      child: Container(
-                        decoration: BoxDecoration(
+                    return GestureDetector(
+                      onTap: () {
+                        Navigator.push(
+                          context,
+                          MaterialPageRoute(
+                            builder: (context) => MoviePage(
+                              movieId: film.id.toString(), // Ensure you pass the correct type for movieId
+                              username: 'YourUsername', // Replace with the actual username or pass dynamically
+                            ),
+                          ),
+                        );
+                      },
+                      child: Padding(
+                        padding: const EdgeInsets.all(8.0),
+                        child: Container(
+                          decoration: BoxDecoration(
                             shape: BoxShape.rectangle,
                             color: Colors.grey,
-                            borderRadius:
-                            BorderRadiusDirectional.circular(5)),
-                        width: 100,
-                        child: Padding(
-                          padding: EdgeInsets.all(1.0),
-                          child: Image.network(
-                            "https://image.tmdb.org/t/p/w600_and_h900_bestv2/${film.poster_path}",
-                            fit: BoxFit.cover,
+                            borderRadius: BorderRadiusDirectional.circular(5),
+                          ),
+                          width: 100,
+                          child: Padding(
+                            padding: const EdgeInsets.all(1.0),
+                            child: Image.network(
+                              "https://image.tmdb.org/t/p/w600_and_h900_bestv2/${film.poster_path}",
+                              fit: BoxFit.cover,
+                            ),
                           ),
                         ),
                       ),
                     );
                   }).toList(),
+
+
                 ),
               ),
             ],
