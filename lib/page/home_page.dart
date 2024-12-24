@@ -23,7 +23,7 @@ class home_page extends StatelessWidget {
           homeContainer(title:"Top Rated"),
           homeContainer(title:"Upcoming"),
           homeContainer(title:"Recommendation"),
-          //homeContainer(title:"Suggestion"),
+          //homeContainer(title:"Action Movie"),
           //homeContainer(title:"Watch Again"),
         ],
       ),

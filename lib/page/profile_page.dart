@@ -13,10 +13,8 @@ class profile_page extends StatelessWidget {
       body: ListView(
         children:  [
           profileSection(),
-          homeContainer(title: "My Favorite Films"),
-          homeContainer(title: "Liked Films"),
-          homeContainer(title: "Liste1"),
-          homeContainer(title: "Liste2")
+          homeContainer(title: "Popular"),
+
         ],
       ),
       bottomNavigationBar: const navigationBar(),

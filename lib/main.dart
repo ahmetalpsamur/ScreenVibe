@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:screen_vibe/page/home_page.dart';
 import 'package:screen_vibe/page/login_page.dart';
+import 'package:screen_vibe/page/profile_page.dart';
 import 'package:screen_vibe/widget/homeContainer.dart';
 import 'package:screen_vibe/widget/navigationBar.dart';
 import 'package:screen_vibe/widget/profileSection.dart';
@@ -18,7 +19,7 @@ class MyApp extends StatelessWidget {
       // Kendi yaptığın sayfayı direk görmek
       // için home_page yerine login_page yaz
       // öyle test et. Geçişleri sonra yaparız.
-      home: home_page(), //BU KISIMI DEĞİŞTİR.
+      home: profile_page(), //BU KISIMI DEĞİŞTİR.
     );
   }
 }
