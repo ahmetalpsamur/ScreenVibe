@@ -17,6 +17,17 @@ class profile_page extends StatelessWidget {
 
         ],
       ),
+      floatingActionButton: FloatingActionButton(
+        onPressed: () {
+          // Define what happens when the button is pressed
+          ScaffoldMessenger.of(context).showSnackBar(
+            const SnackBar(content: Text('Floating Action Button Pressed')),
+          );
+        },
+        child: const Icon(Icons.add), // Customize the icon as needed
+        backgroundColor: Colors.blue, // Customize the color of the button
+      ),
     );
+
   }
 }

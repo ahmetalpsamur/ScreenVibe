@@ -2,6 +2,7 @@ class Film {
   final String title;
   final String poster_path;
   final int id;
+  bool isHovered = false;
 
   Film({
     required this.title,
