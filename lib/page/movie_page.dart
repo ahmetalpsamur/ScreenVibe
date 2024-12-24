@@ -3,17 +3,24 @@ import 'package:http/http.dart' as http;
 import 'dart:convert';
 
 class MoviePage extends StatefulWidget {
+  final String movieId;
+  final String username;
+
+  const MoviePage({
+    super.key,
+    required this.movieId,
+    required this.username,
+  });
+
   @override
   _MoviePageState createState() => _MoviePageState();
 }
 
 class _MoviePageState extends State<MoviePage> {
   final String apiKey = 'bbbbd36068dade744df4d8f1a6e04a06';
-  final String movieId = '550'; // Replace with the desired movie ID
   Map<String, dynamic>? movieData;
   List<Map<String, String>> comments = [];
   final TextEditingController _commentController = TextEditingController();
-  final String defaultUsername = "MovieFan123"; // Default username
 
   @override
   void initState() {
@@ -23,7 +30,7 @@ class _MoviePageState extends State<MoviePage> {
 
   Future<void> fetchMovieDetails() async {
     final url =
-        'https://api.themoviedb.org/3/movie/$movieId?api_key=$apiKey&language=en-US';
+        'https://api.themoviedb.org/3/movie/${widget.movieId}?api_key=$apiKey&language=en-US';
     try {
       final response = await http.get(Uri.parse(url));
       if (response.statusCode == 200) {
@@ -40,7 +47,7 @@ class _MoviePageState extends State<MoviePage> {
 
   void addComment(String comment) {
     setState(() {
-      comments.add({'username': defaultUsername, 'comment': comment});
+      comments.add({'username': widget.username, 'comment': comment});
       _commentController.clear();
     });
   }

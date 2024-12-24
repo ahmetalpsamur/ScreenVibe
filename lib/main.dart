@@ -20,7 +20,7 @@ class MyApp extends StatelessWidget {
       // Kendi yaptığın sayfayı direk görmek
       // için home_page yerine login_page yaz
       // öyle test et. Geçişleri sonra yaparız.
-      home: MoviePage(), //BU KISIMI DEĞİŞTİR.
+      home: MoviePage(movieId: '552', username: 'username'), //BU KISIMI DEĞİŞTİR.
     );
   }
 }

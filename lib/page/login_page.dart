@@ -18,7 +18,7 @@ class login_page extends StatelessWidget {
                 radius: 50.0,
                 backgroundImage: NetworkImage(
                   "https://image.tmdb.org/t/p/w600_and_h900_bestv2/pB8BM7pdSp6B6Ih7QZ4DrQ3PmJK.jpg",
-                ), // Replace with your logo
+                ),
               ),
               const SizedBox(height: 20.0),
               // Welcome Text
@@ -64,7 +64,7 @@ class login_page extends StatelessWidget {
               const SizedBox(height: 20.0),
               // Login Button
               ElevatedButton(
-                onPressed: () {}, // Placeholder for onPressed functionality
+                onPressed: () {},
                 style: ElevatedButton.styleFrom(
                   padding: const EdgeInsets.symmetric(vertical: 15.0),
                   minimumSize: const Size(double.infinity, 50),
@@ -77,7 +77,7 @@ class login_page extends StatelessWidget {
               const SizedBox(height: 15.0),
               // Forgot Password Text
               GestureDetector(
-                onTap: () {}, // Placeholder for onTap functionality
+                onTap: () {},
                 child: const Text(
                   'Forgot Password?',
                   style: TextStyle(
@@ -93,7 +93,7 @@ class login_page extends StatelessWidget {
                 children: [
                   const Text("Don't have an account? "),
                   GestureDetector(
-                    onTap: () {}, // Placeholder for onTap functionality
+                    onTap: () {},
                     child: const Text(
                       'Sign Up',
                       style: TextStyle(
