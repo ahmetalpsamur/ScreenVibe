@@ -1,0 +1,29 @@
+{
+  "project_info": {
+    "project_number": "19290217136",
+    "project_id": "screenvibe-4876f",
+    "storage_bucket": "screenvibe-4876f.firebasestorage.app"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:19290217136:android:d0416063dbc867a3c8b975",
+        "android_client_info": {
+          "package_name": "com.example.screen_vibe"
+        }
+      },
+      "oauth_client": [],
+      "api_key": [
+        {
+          "current_key": "AIzaSyBTdMm4N6jKxr-02pvyEUcgbj7B7yU-qwI"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": []
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}
