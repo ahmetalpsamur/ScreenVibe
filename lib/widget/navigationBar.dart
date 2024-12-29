@@ -1,7 +1,9 @@
 import 'package:flutter/material.dart';
 import 'package:google_nav_bar/google_nav_bar.dart';
 import 'package:screen_vibe/page/home_page.dart';
+import 'package:screen_vibe/page/login_page.dart';
 import 'package:screen_vibe/page/profile_page.dart';
+import 'package:screen_vibe/page/register_page.dart';
 import 'package:screen_vibe/page/search_page.dart';
 
 class navigationBar extends StatefulWidget {

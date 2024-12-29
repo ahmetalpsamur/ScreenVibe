@@ -3,6 +3,7 @@ import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:screen_vibe/page/login_page.dart';
 import 'package:screen_vibe/page/register_page.dart';
+import 'package:screen_vibe/widget/navigationBar.dart';
 
 
 void main() async{
@@ -37,7 +38,7 @@ class MyApp extends StatelessWidget {
       // Kendi yaptığın sayfayı direk görmek
       // için home_page yerine login_page yaz
       // öyle test et. Geçişleri sonra yaparız.
-      home: register_page(), //BU KISIMI DEĞİŞTİR.
+      home: login_page(), //BU KISIMI DEĞİŞTİR.
 
     );
   }

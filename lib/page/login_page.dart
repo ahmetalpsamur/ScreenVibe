@@ -1,6 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:firebase_auth/firebase_auth.dart';
+import 'package:screen_vibe/page/home_page.dart';
 import 'package:screen_vibe/page/register_page.dart';
+import 'package:screen_vibe/widget/navigationBar.dart';
 
 class login_page extends StatefulWidget {
   const login_page({Key? key}) : super(key: key);
@@ -28,9 +30,13 @@ class _LoginPageState extends State<login_page> {
         email: _emailController.text.trim(),
         password: _passwordController.text.trim(),
       );
+      Navigator.pushReplacement(
+        context,
+        MaterialPageRoute(builder: (context) =>  navigationBar()),
+      );
       // Navigate to a new page after successful login
       ScaffoldMessenger.of(context).showSnackBar(
-        SnackBar(content: Text('Login Successful!')),
+        SnackBar(content: Text('Login Successful!',)),
       );
     } on FirebaseAuthException catch (e) {
       setState(() {
