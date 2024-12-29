@@ -1,7 +1,47 @@
 import 'package:flutter/material.dart';
+import 'package:firebase_auth/firebase_auth.dart';
+import 'package:screen_vibe/page/register_page.dart';
 
-class login_page extends StatelessWidget {
-  const login_page({super.key});
+class login_page extends StatefulWidget {
+  const login_page({Key? key}) : super(key: key);
+
+  @override
+  _LoginPageState createState() => _LoginPageState();
+}
+
+class _LoginPageState extends State<login_page> {
+  final TextEditingController _emailController = TextEditingController();
+  final TextEditingController _passwordController = TextEditingController();
+  final FirebaseAuth _auth = FirebaseAuth.instance;
+
+  bool _isLoading = false;
+  String? _errorMessage;
+
+  Future<void> _login() async {
+    setState(() {
+      _isLoading = true;
+      _errorMessage = null;
+    });
+
+    try {
+      await _auth.signInWithEmailAndPassword(
+        email: _emailController.text.trim(),
+        password: _passwordController.text.trim(),
+      );
+      // Navigate to a new page after successful login
+      ScaffoldMessenger.of(context).showSnackBar(
+        SnackBar(content: Text('Login Successful!')),
+      );
+    } on FirebaseAuthException catch (e) {
+      setState(() {
+        _errorMessage = e.message;
+      });
+    } finally {
+      setState(() {
+        _isLoading = false;
+      });
+    }
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -13,7 +53,6 @@ class login_page extends StatelessWidget {
           child: Column(
             mainAxisAlignment: MainAxisAlignment.center,
             children: [
-              // App Logo
               const CircleAvatar(
                 radius: 50.0,
                 backgroundImage: NetworkImage(
@@ -21,7 +60,6 @@ class login_page extends StatelessWidget {
                 ),
               ),
               const SizedBox(height: 20.0),
-              // Welcome Text
               const Text(
                 'Welcome Back!',
                 style: TextStyle(
@@ -39,8 +77,8 @@ class login_page extends StatelessWidget {
                 ),
               ),
               const SizedBox(height: 30.0),
-              // Email Field
               TextField(
+                controller: _emailController,
                 decoration: InputDecoration(
                   prefixIcon: const Icon(Icons.email),
                   labelText: 'Email Address',
@@ -50,8 +88,8 @@ class login_page extends StatelessWidget {
                 ),
               ),
               const SizedBox(height: 15.0),
-              // Password Field
               TextField(
+                controller: _passwordController,
                 obscureText: true,
                 decoration: InputDecoration(
                   prefixIcon: const Icon(Icons.lock),
@@ -61,23 +99,30 @@ class login_page extends StatelessWidget {
                   ),
                 ),
               ),
+              if (_errorMessage != null)
+                Padding(
+                  padding: const EdgeInsets.only(top: 10),
+                  child: Text(
+                    _errorMessage!,
+                    style: TextStyle(color: Colors.red, fontSize: 14),
+                  ),
+                ),
               const SizedBox(height: 20.0),
-              // Login Button
               ElevatedButton(
-                onPressed: () {},
+                onPressed: _isLoading ? null : _login,
                 style: ElevatedButton.styleFrom(
                   padding: const EdgeInsets.symmetric(vertical: 15.0),
                   minimumSize: const Size(double.infinity, 50),
                 ),
-                child: const Text(
-                  'Login',
-                  style: TextStyle(fontSize: 16.0),
-                ),
+                child: _isLoading
+                    ? CircularProgressIndicator(color: Colors.white)
+                    : const Text('Login', style: TextStyle(fontSize: 16.0)),
               ),
               const SizedBox(height: 15.0),
-              // Forgot Password Text
               GestureDetector(
-                onTap: () {},
+                onTap: () {
+                  // Navigate to forgot password functionality
+                },
                 child: const Text(
                   'Forgot Password?',
                   style: TextStyle(
@@ -87,18 +132,23 @@ class login_page extends StatelessWidget {
                 ),
               ),
               const SizedBox(height: 30.0),
-              // Sign Up Text
               Row(
                 mainAxisAlignment: MainAxisAlignment.center,
                 children: [
                   const Text("Don't have an account? "),
                   GestureDetector(
-                    onTap: () {},
+                    onTap: () {
+                      Navigator.push(
+                        context,
+                        MaterialPageRoute(builder: (context) => const register_page()),
+                      );
+                    },
                     child: const Text(
                       'Sign Up',
                       style: TextStyle(
                         color: Colors.blue,
                         fontWeight: FontWeight.bold,
+                        decoration: TextDecoration.underline,
                       ),
                     ),
                   ),

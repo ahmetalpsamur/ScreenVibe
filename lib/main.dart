@@ -1,14 +1,10 @@
 import 'package:firebase_core/firebase_core.dart';
 import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
-import 'package:screen_vibe/page/home_page.dart';
 import 'package:screen_vibe/page/login_page.dart';
-import 'package:screen_vibe/page/profile_page.dart';
-import 'package:screen_vibe/widget/homeContainer.dart';
-import 'package:screen_vibe/widget/navigationBar.dart';
-import 'package:screen_vibe/widget/profileSection.dart';
 import 'package:screen_vibe/page/register_page.dart';
-import 'package:screen_vibe/page/movie_page.dart';
+
+
 void main() async{
   WidgetsFlutterBinding.ensureInitialized();
 
@@ -41,7 +37,7 @@ class MyApp extends StatelessWidget {
       // Kendi yaptığın sayfayı direk görmek
       // için home_page yerine login_page yaz
       // öyle test et. Geçişleri sonra yaparız.
-      home: navigationBar(), //BU KISIMI DEĞİŞTİR.
+      home: register_page(), //BU KISIMI DEĞİŞTİR.
 
     );
   }
