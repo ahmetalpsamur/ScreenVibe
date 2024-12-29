@@ -38,13 +38,18 @@ class _RegisterPageState extends State<register_page> {
       UserCredential userCredential = await _auth.createUserWithEmailAndPassword(
         email: _emailController.text.trim(),
         password: _passwordController.text.trim(),
+
       );
+      await userCredential.user?.updateDisplayName(_nameController.text.trim());
+      await userCredential.user?.reload();
 
       // Save user details to Firestore
       await FirebaseFirestore.instance.collection('users').doc(userCredential.user!.uid).set({
         'name': _nameController.text.trim(),
         'email': _emailController.text.trim(),
         'created_at': Timestamp.now(),
+        'films_watched': 0,
+        'filmList': [],
       });
 
       ScaffoldMessenger.of(context).showSnackBar(

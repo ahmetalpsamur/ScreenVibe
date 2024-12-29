@@ -1,5 +1,6 @@
 import 'dart:convert';
 
+import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:screen_vibe/API/apikey.dart';
 import 'package:screen_vibe/API/apilink.dart';
@@ -24,6 +25,10 @@ class _homeContainerState extends State<homeContainer> {
   List<Film> upcomingFilms = [];
   List<Film> recommendationFilms = [];
   bool isLoading = true;
+  // Check if a user is currently logged in
+  final FirebaseAuth _auth = FirebaseAuth.instance;
+
+
 
   @override
   void initState() {
@@ -33,6 +38,17 @@ class _homeContainerState extends State<homeContainer> {
     getTopRatedFilms();
     getUpcomingFilms();
     getRecommendationFilms();
+    User? currentUser = _auth.currentUser;
+    // Check if a user is currently logged in
+      if (currentUser != null) {
+        String uid = currentUser.uid;
+        print("Logged-in user's UID: $uid");
+        print(currentUser.displayName);
+      } else {
+        print("No user is currently logged in.");
+      }
+
+
   }
 
   Future<void> getPopularFilms() async {
