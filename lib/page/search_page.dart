@@ -1,7 +1,57 @@
-import 'package:flutter/material.dart';
+import 'dart:convert';
 
-class search_page extends StatelessWidget {
+import 'package:flutter/material.dart';
+import 'package:screen_vibe/API/apikey.dart';
+import 'package:screen_vibe/API/apilink.dart';
+import 'package:http/http.dart' as http;
+import 'package:screen_vibe/model/film.dart';
+import 'package:screen_vibe/page/movie_page.dart';
+
+class search_page extends StatefulWidget {
   const search_page({super.key});
+
+  @override
+  State<search_page> createState() => _search_pageState();
+}
+
+class _search_pageState extends State<search_page> {
+  bool isLoading = true;
+  List<Film> searchFilms = [];
+  String userQuery='';
+  Future<void> getSearchFilm() async {
+    final Uri url = Uri.https(
+      hostUrl, // Host
+      searchPathUrl, // Path
+      {"query": userQuery,"api_key": apikey}, // Query parameters
+    );
+    print(url);
+
+    try {
+      var response = await http.get(url);
+      if (response.statusCode == 200) {
+        var jsonData = jsonDecode(response.body);
+        setState(() {
+          searchFilms.clear();
+          for (var eachFilm in jsonData['results']) {
+            final film = Film(
+              title: eachFilm['title'] ?? 'Not Found', // Varsayılan değer
+              poster_path: eachFilm['poster_path'] ?? notFoundFilmPoster, // Varsayılan değer
+              id: eachFilm['id'] ?? 0, // Varsayılan değer
+            );
+            searchFilms.add(film);
+          }
+          isLoading = false; // Data is loaded, set isLoading to false
+        });
+      } else {
+        throw Exception('Failed to load films');
+      }
+    } catch (e) {
+      print("An error occurred: $e");
+      setState(() {
+        isLoading = false; // Handle error, stop loading
+      });
+    }
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -39,6 +89,7 @@ class search_page extends StatelessWidget {
                 ),
                 onChanged: (value) {
                   // Arama işlemi için gerekli kodlar
+                  userQuery=value;
                 },
               ),
             ),
@@ -50,6 +101,7 @@ class search_page extends StatelessWidget {
               child: ElevatedButton(
                 onPressed: () {
                   // Arama butonuna tıklandığında yapılacak işlemler
+                  getSearchFilm();
                 },
                 style: ElevatedButton.styleFrom(
                   padding: const EdgeInsets.symmetric(horizontal: 30, vertical: 15),
@@ -73,11 +125,42 @@ class search_page extends StatelessWidget {
 
             // Results Section (placeholder)
             Expanded(
-              child: Center(
+              child: isLoading
+                  ? const Center(
+                child: CircularProgressIndicator(),
+              )
+                  : searchFilms.isEmpty
+                  ? Center(
                 child: Text(
-                  'Arama sonuçları burada görünecek.',
+                  'Sonuç bulunamadı.',
                   style: TextStyle(color: Colors.grey[600]),
                 ),
+              )
+                  : ListView.builder(
+                itemCount: searchFilms.length,
+                itemBuilder: (context, index) {
+                  final film = searchFilms[index];
+                  return ListTile(
+                    leading: Image.network(
+                      "https://image.tmdb.org/t/p/w92/${film.poster_path}",
+                      fit: BoxFit.cover,
+                      width: 50,
+                      height: 75,
+                    ),
+                    title: Text(film.title),
+                    onTap: () {
+                      Navigator.push(
+                        context,
+                        MaterialPageRoute(
+                          builder: (context) => MoviePage(
+                            movieId: film.id.toString(),
+                            username: 'YourUsername', // Replace dynamically
+                          ),
+                        ),
+                      );
+                    },
+                  );
+                },
               ),
             ),
           ],
