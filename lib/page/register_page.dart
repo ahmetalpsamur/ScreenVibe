@@ -82,10 +82,13 @@ class _RegisterPageState extends State<register_page> {
               Column(
                 mainAxisAlignment: MainAxisAlignment.center,
                 children: [
-                  const CircleAvatar(
-                    radius: 50.0,
-                    backgroundImage: NetworkImage(
-                        "https://image.tmdb.org/t/p/w600_and_h900_bestv2/pB8BM7pdSp6B6Ih7QZ4DrQ3PmJK.jpg"),
+                  ClipOval(
+                    child: Image.asset(
+                      'lib/media/logo.jpg',
+                      width: 200.0, // Adjust the width as needed
+                      height: 200.0, // Adjust the height as needed
+                      fit: BoxFit.cover, // Use BoxFit.cover to ensure the image fills the circle
+                    ),
                   ),
                   const SizedBox(height: 20.0),
                   const Text(

@@ -214,6 +214,7 @@ class _homeContainerState extends State<homeContainer> {
       });
     }
   }
+
   Future<void> getWatchedFilms() async {
     final Uri url = Uri.https(
       hostUrl, // Host
