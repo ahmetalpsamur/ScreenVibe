@@ -48,7 +48,6 @@ class _RegisterPageState extends State<register_page> {
         'name': _nameController.text.trim(),
         'email': _emailController.text.trim(),
         'created_at': Timestamp.now(),
-        'films_watched': 0,
         'filmList': [],
       });
 

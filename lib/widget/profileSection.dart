@@ -59,7 +59,7 @@ class _ProfileSectionState extends State<profileSection> {
 
         if (userDoc.exists) {
           // Retrieve the 'films_watched' field
-          int filmsWatched = userDoc['films_watched'] ?? 0;
+          int filmsWatched = userDoc['filmList']?.length ?? 0;
           return filmsWatched;
         } else {
           print("User document does not exist.");

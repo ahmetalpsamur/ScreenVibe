@@ -1,5 +1,6 @@
 import 'dart:convert';
 
+import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:screen_vibe/API/apikey.dart';
@@ -333,24 +334,21 @@ class _homeContainerState extends State<homeContainer> {
                                     bottom: 0,
                                     right: 0,
                                     child: IconButton(
-                                      onPressed: () {
+                                      onPressed: () async {
                                         setState(() {
-                                          film.isWatched =
-                                          !film.isWatched;
+                                          film.isWatched = !film.isWatched;
                                         });
+                                        addFilmDatabase(film);
+
                                       },
                                       icon: Icon(
-                                        film.isWatched
-                                            ? Icons.check_circle
-                                            : Icons
-                                            .add_circle_outline_rounded,
-                                        color: film.isWatched
-                                            ? Colors.green
-                                            : Colors.white,
+                                        film.isWatched ? Icons.check_circle : Icons.add_circle_outline_rounded,
+                                        color: film.isWatched ? Colors.green : Colors.white,
                                         size: 24,
                                       ),
                                     ),
-                                  )
+                                  ),
+
                                 ],
                               ),
                             ),
@@ -366,6 +364,30 @@ class _homeContainerState extends State<homeContainer> {
         ),
       ),
     );
+  }
+  addFilmDatabase(Film film) async {
+    try {
+      final user = FirebaseAuth.instance.currentUser;
+
+      if (user != null) {
+        final userDoc = FirebaseFirestore.instance.collection('users').doc(user.uid);
+
+        if (film.isWatched) {
+          await userDoc.update({
+            'filmList': FieldValue.arrayUnion([film.id]),
+          });
+        } else {
+          await userDoc.update({
+            'filmList': FieldValue.arrayRemove([film.id]),
+          });
+        }
+      }
+    } catch (e) {
+      print('Error updating film list: $e');
+      ScaffoldMessenger.of(context).showSnackBar(
+        SnackBar(content: Text('Failed to update film list')),
+      );
+    }
   }
 
   @override
@@ -394,56 +416,7 @@ class _homeContainerState extends State<homeContainer> {
      return displayFilmCard(recommendationFilms);
     }
     else{
-    return Padding(
-      padding: const EdgeInsets.all(8.0),
-      child: Container(
-        color: const Color.fromRGBO(65, 72, 75, 1.0),
-        height: 250,
-        child: Column(
-          crossAxisAlignment: CrossAxisAlignment.start,
-          children: [
-            Expanded(
-              flex: 1,
-              child: Text(
-                widget.title,
-                style: const TextStyle(
-                  color: Colors.white70,
-                  fontSize: 40,
-                ),
-              ),
-            ),
-            Expanded(
-              flex: 2,
-              child: isLoading
-                  ? Center(child: CircularProgressIndicator())
-                  : ListView(
-                scrollDirection: Axis.horizontal,
-                children: popularFilms.map((film) {
-                  return Padding(
-                    padding: const EdgeInsets.all(8.0),
-                    child: Container(
-                      decoration: BoxDecoration(
-                          shape: BoxShape.rectangle,
-                          color: Colors.grey,
-                          borderRadius:
-                          BorderRadiusDirectional.circular(5)),
-                      width: 100,
-                      child: Padding(
-                        padding: EdgeInsets.all(1.0),
-                        child: Image.network(
-                          "https://image.tmdb.org/t/p/w600_and_h900_bestv2/${film.poster_path}",
-                          fit: BoxFit.cover,
-                        ),
-                      ),
-                    ),
-                  );
-                }).toList(),
-              ),
-            ),
-          ],
-        ),
-      ),
-    );
+    return Placeholder();
   }
   }
 }
