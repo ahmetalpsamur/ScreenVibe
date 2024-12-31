@@ -25,6 +25,7 @@ class _homeContainerState extends State<homeContainer> {
   List<Film> topRatedFilms = [];
   List<Film> upcomingFilms = [];
   List<Film> recommendationFilms = [];
+  List<Film> watchedFilms = [];
   bool isLoading = true;
   // Check if a user is currently logged in
   final FirebaseAuth _auth = FirebaseAuth.instance;
@@ -34,6 +35,7 @@ class _homeContainerState extends State<homeContainer> {
   @override
   void initState() {
     super.initState();
+    getWatchedFilms();
     getPopularFilms();
     getNowPlayingFilms();
     getTopRatedFilms();
@@ -212,6 +214,39 @@ class _homeContainerState extends State<homeContainer> {
       });
     }
   }
+  Future<void> getWatchedFilms() async {
+    final Uri url = Uri.https(
+      hostUrl, // Host
+      recommendationPathUrl, // Path
+      {"api_key": apikey}, // Query parameters
+    );
+
+    try {
+      var response = await http.get(url);
+      if (response.statusCode == 200) {
+        var jsonData = jsonDecode(response.body);
+        setState(() {
+          for (var eachFilm in jsonData['results']) {
+            final film = Film(
+                title: eachFilm['title'],
+                poster_path: eachFilm['poster_path'],
+                id: eachFilm['id']
+            );
+            recommendationFilms.add(film);
+          }
+          isLoading = false; // Data is loaded, set isLoading to false
+        });
+      } else {
+        throw Exception('Failed to load films');
+      }
+    } catch (e) {
+      print("An error occurred: $e");
+      setState(() {
+        isLoading = false; // Handle error, stop loading
+      });
+    }
+  }
+
 
   displayFilmCard(List<Film> films)
   {

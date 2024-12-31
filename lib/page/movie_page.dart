@@ -1,3 +1,5 @@
+import 'package:cloud_firestore/cloud_firestore.dart';
+import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:http/http.dart' as http;
 import 'dart:convert';
@@ -22,10 +24,15 @@ class _MoviePageState extends State<MoviePage> {
   List<Map<String, String>> comments = [];
   final TextEditingController _commentController = TextEditingController();
 
+  String? displayName;
+  final FirebaseAuth _auth = FirebaseAuth.instance;
+
   @override
   void initState() {
     super.initState();
     fetchMovieDetails();
+    fetchComments();
+    _loadUserData();
   }
 
   Future<void> fetchMovieDetails() async {
@@ -44,12 +51,68 @@ class _MoviePageState extends State<MoviePage> {
       print('Error fetching movie details: $e');
     }
   }
+  Future<void> _loadUserData() async {
+    User? currentUser = _auth.currentUser;
 
-  void addComment(String comment) {
-    setState(() {
-      comments.add({'username': widget.username, 'comment': comment});
-      _commentController.clear();
-    });
+    if (currentUser != null) {
+      setState(() {
+        displayName = currentUser.displayName ?? "Guest";
+      });
+      print("Logged-in user's name: $displayName");
+
+    } else {
+      print("No user is currently logged in.");
+      setState(() {
+        displayName = "No user logged in";
+      });
+    }
+  }
+  Future<void> fetchComments() async {
+    try {
+      final querySnapshot = await FirebaseFirestore.instance
+          .collection('comments')
+          .where('movieId', isEqualTo: widget.movieId)
+          .orderBy('timestamp', descending: true)
+          .get();
+
+      setState(() {
+        comments = querySnapshot.docs.map((doc) {
+          final data = doc.data() as Map<String, dynamic>;
+          return {
+            'username': data['username']?.toString() ?? 'Guest',
+            'comment': data['comment']?.toString() ?? '',
+          };
+        }).toList().cast<Map<String, String>>();
+      });
+    } catch (e) {
+      print("Error fetching comments: $e");
+    }
+  }
+
+  void addComment(String comment) async {
+    try {
+      final newComment = {
+        'username': displayName ?? 'Guest',
+        'comment': comment,
+        'movieId': widget.movieId,
+        'timestamp': FieldValue.serverTimestamp(),
+      };
+
+      await FirebaseFirestore.instance.collection('comments').add(newComment);
+
+      setState(() {
+        comments.add({
+          'username': displayName ?? 'Guest',
+          'comment': comment,
+          'movieId': widget.movieId
+        });
+        _commentController.clear();
+      });
+
+      print("Comment added to Firestore!");
+    } catch (e) {
+      print("Error adding comment to Firestore: $e");
+    }
   }
 
   @override
