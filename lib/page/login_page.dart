@@ -62,9 +62,9 @@ class _LoginPageState extends State<login_page> {
               ClipOval(
                 child: Image.asset(
                   'lib/media/logo.jpg',
-                  width: 200.0, // Adjust the width as needed
-                  height: 200.0, // Adjust the height as needed
-                  fit: BoxFit.cover, // Use BoxFit.cover to ensure the image fills the circle
+                  width: 200.0,
+                  height: 200.0,
+                  fit: BoxFit.cover,
                 ),
               ),
               const SizedBox(height: 20.0),
@@ -129,7 +129,7 @@ class _LoginPageState extends State<login_page> {
               const SizedBox(height: 15.0),
               GestureDetector(
                 onTap: () {
-                  // Navigate to forgot password functionality
+
                 },
                 child: const Text(
                   'Forgot Password?',

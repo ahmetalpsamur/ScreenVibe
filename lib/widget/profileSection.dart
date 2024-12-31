@@ -15,7 +15,7 @@ class _ProfileSectionState extends State<profileSection> {
   final FirebaseAuth _auth = FirebaseAuth.instance;
   String? displayName;
   int? filmsWatched;
-  List<String>? filmList; // To hold the list of film IDs
+  List<String>? filmList;
 
   @override
   void initState() {
@@ -23,7 +23,7 @@ class _ProfileSectionState extends State<profileSection> {
     _loadUserData();
   }
 
-  // Asynchronously load user data (displayName, filmsWatched, and filmList)
+
   Future<void> _loadUserData() async {
     User? currentUser = _auth.currentUser;
 
@@ -33,7 +33,7 @@ class _ProfileSectionState extends State<profileSection> {
       });
       print("Logged-in user's name: $displayName");
 
-      // Fetch the filmsWatched and filmList
+
       int? films = await getFilmsWatched();
       List<String>? filmsList = await getFilmList();
       setState(() {
@@ -44,22 +44,22 @@ class _ProfileSectionState extends State<profileSection> {
       print("No user is currently logged in.");
       setState(() {
         displayName = "No user logged in";
-        filmsWatched = 0; // Default value if no user is logged in
+        filmsWatched = 0;
         filmList = [];
       });
     }
   }
-  // Function to fetch the filmsWatched value from Firestore
+
   Future<int?> getFilmsWatched() async {
     User? currentUser = FirebaseAuth.instance.currentUser;
 
     if (currentUser != null) {
       try {
-        // Fetch the user document from Firestore
+
         DocumentSnapshot userDoc = await FirebaseFirestore.instance.collection('users').doc(currentUser.uid).get();
 
         if (userDoc.exists) {
-          // Retrieve the 'films_watched' field
+
           int filmsWatched = userDoc['filmList']?.length ?? 0;
           return filmsWatched;
         } else {
@@ -76,18 +76,18 @@ class _ProfileSectionState extends State<profileSection> {
     }
   }
 
-  // Function to fetch the filmList from Firestore
+
   Future<List<String>?> getFilmList() async {
     User? currentUser = FirebaseAuth.instance.currentUser;
 
     if (currentUser != null) {
       try {
-        // Fetch the user document from Firestore
+
         DocumentSnapshot userDoc = await FirebaseFirestore.instance.collection('users').doc(currentUser.uid).get();
 
         if (userDoc.exists) {
-          // Retrieve the 'filmList' field
-          List<String> films = List<String>.from(userDoc['filmList'] ?? []); // Default to empty list if field is not found
+
+          List<String> films = List<String>.from(userDoc['filmList'] ?? []);
           return films;
         } else {
           print("User document does not exist.");
@@ -147,12 +147,12 @@ class _ProfileSectionState extends State<profileSection> {
               ),
               const SizedBox(height: 10),
               Text(
-                "Films Watched: ${filmsWatched ?? 0}", // Display the films watched count
+                "Films Watched: ${filmsWatched ?? 0}",
                 style: const TextStyle(fontSize: 16, fontWeight: FontWeight.w500),
               ),
               const SizedBox(height: 10),
               Text(
-                "Film List: ${filmList?.join(', ') ?? 'No films watched'}", // Display the list of film IDs
+                "Film List: ${filmList?.join(', ') ?? 'No films watched'}",
                 style: const TextStyle(fontSize: 16),
               ),
             ],

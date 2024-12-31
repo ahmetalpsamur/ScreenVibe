@@ -23,8 +23,8 @@ class profile_page extends StatelessWidget {
             const SnackBar(content: Text('Floating Action Button Pressed')),
           );
         },
-        child: const Icon(Icons.add), // Customize the icon as needed
-        backgroundColor: Colors.blue, // Customize the color of the button
+        child: const Icon(Icons.add),
+        backgroundColor: Colors.blue,
       ),
     );
 

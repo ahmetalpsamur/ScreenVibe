@@ -16,7 +16,7 @@ class navigationBar extends StatefulWidget {
 class _NavigationBarState extends State<navigationBar> {
   int _selectedIndex = 0;
 
-  // Define the list of pages
+
   final List<Widget> _pages = [
     home_page(),
     search_page(),

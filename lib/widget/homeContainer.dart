@@ -27,7 +27,6 @@ class _homeContainerState extends State<homeContainer> {
   List<Film> recommendationFilms = [];
   List<Film> watchedFilms = [];
   bool isLoading = true;
-  // Check if a user is currently logged in
   final FirebaseAuth _auth = FirebaseAuth.instance;
 
 
@@ -42,7 +41,7 @@ class _homeContainerState extends State<homeContainer> {
     getUpcomingFilms();
     getRecommendationFilms();
     User? currentUser = _auth.currentUser;
-    // Check if a user is currently logged in
+
       if (currentUser != null) {
         String uid = currentUser.uid;
         print("Logged-in user's UID: $uid");
@@ -56,9 +55,9 @@ class _homeContainerState extends State<homeContainer> {
 
   Future<void> getPopularFilms() async {
     final Uri url = Uri.https(
-      hostUrl, // Host
-      popularPathUrl, // Path
-      {"api_key": apikey}, // Query parameters
+      hostUrl,
+      popularPathUrl,
+      {"api_key": apikey},
     );
 
     try {
@@ -74,7 +73,7 @@ class _homeContainerState extends State<homeContainer> {
             );
             popularFilms.add(film);
           }
-          isLoading = false; // Data is loaded, set isLoading to false
+          isLoading = false;
         });
       } else {
         throw Exception('Failed to load films');
@@ -82,15 +81,15 @@ class _homeContainerState extends State<homeContainer> {
     } catch (e) {
       print("An error occurred: $e");
       setState(() {
-        isLoading = false; // Handle error, stop loading
+        isLoading = false;
       });
     }
   }
   Future<void> getNowPlayingFilms() async {
     final Uri url = Uri.https(
-      hostUrl, // Host
-      nowPlayingPathUrl, // Path
-      {"api_key": apikey}, // Query parameters
+      hostUrl,
+      nowPlayingPathUrl,
+      {"api_key": apikey},
     );
 
     try {
@@ -106,7 +105,7 @@ class _homeContainerState extends State<homeContainer> {
             );
             nowPlayingFilms.add(film);
           }
-          isLoading = false; // Data is loaded, set isLoading to false
+          isLoading = false;
         });
       } else {
         throw Exception('Failed to load films');
@@ -114,15 +113,15 @@ class _homeContainerState extends State<homeContainer> {
     } catch (e) {
       print("An error occurred: $e");
       setState(() {
-        isLoading = false; // Handle error, stop loading
+        isLoading = false;
       });
     }
   }
   Future<void> getTopRatedFilms() async {
     final Uri url = Uri.https(
-      hostUrl, // Host
-      topRatedPathUrl, // Path
-      {"api_key": apikey}, // Query parameters
+      hostUrl,
+      topRatedPathUrl,
+      {"api_key": apikey},
     );
 
     try {
@@ -138,7 +137,7 @@ class _homeContainerState extends State<homeContainer> {
             );
             topRatedFilms.add(film);
           }
-          isLoading = false; // Data is loaded, set isLoading to false
+          isLoading = false;
         });
       } else {
         throw Exception('Failed to load films');
@@ -146,15 +145,15 @@ class _homeContainerState extends State<homeContainer> {
     } catch (e) {
       print("An error occurred: $e");
       setState(() {
-        isLoading = false; // Handle error, stop loading
+        isLoading = false;
       });
     }
   }
   Future<void> getUpcomingFilms() async {
     final Uri url = Uri.https(
-      hostUrl, // Host
-      upcomingPathUrl, // Path
-      {"api_key": apikey}, // Query parameters
+      hostUrl,
+      upcomingPathUrl,
+      {"api_key": apikey},
     );
 
     try {
@@ -170,7 +169,7 @@ class _homeContainerState extends State<homeContainer> {
             );
             upcomingFilms.add(film);
           }
-          isLoading = false; // Data is loaded, set isLoading to false
+          isLoading = false;
         });
       } else {
         throw Exception('Failed to load films');
@@ -178,15 +177,15 @@ class _homeContainerState extends State<homeContainer> {
     } catch (e) {
       print("An error occurred: $e");
       setState(() {
-        isLoading = false; // Handle error, stop loading
+        isLoading = false;
       });
     }
   }
   Future<void> getRecommendationFilms() async {
     final Uri url = Uri.https(
-      hostUrl, // Host
-      recommendationPathUrl, // Path
-      {"api_key": apikey}, // Query parameters
+      hostUrl,
+      recommendationPathUrl,
+      {"api_key": apikey},
     );
 
     try {
@@ -202,7 +201,7 @@ class _homeContainerState extends State<homeContainer> {
             );
             recommendationFilms.add(film);
           }
-          isLoading = false; // Data is loaded, set isLoading to false
+          isLoading = false;
         });
       } else {
         throw Exception('Failed to load films');
@@ -210,16 +209,16 @@ class _homeContainerState extends State<homeContainer> {
     } catch (e) {
       print("An error occurred: $e");
       setState(() {
-        isLoading = false; // Handle error, stop loading
+        isLoading = false;
       });
     }
   }
 
   Future<void> getWatchedFilms() async {
     final Uri url = Uri.https(
-      hostUrl, // Host
-      recommendationPathUrl, // Path
-      {"api_key": apikey}, // Query parameters
+      hostUrl,
+      recommendationPathUrl,
+      {"api_key": apikey},
     );
 
     try {
@@ -235,7 +234,7 @@ class _homeContainerState extends State<homeContainer> {
             );
             recommendationFilms.add(film);
           }
-          isLoading = false; // Data is loaded, set isLoading to false
+          isLoading = false;
         });
       } else {
         throw Exception('Failed to load films');
@@ -243,7 +242,7 @@ class _homeContainerState extends State<homeContainer> {
     } catch (e) {
       print("An error occurred: $e");
       setState(() {
-        isLoading = false; // Handle error, stop loading
+        isLoading = false;
       });
     }
   }

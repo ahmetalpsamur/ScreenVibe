@@ -22,7 +22,7 @@ class _search_pageState extends State<search_page> {
     final Uri url = Uri.https(
       hostUrl, // Host
       searchPathUrl, // Path
-      {"query": userQuery,"api_key": apikey}, // Query parameters
+      {"query": userQuery,"api_key": apikey},
     );
     print(url);
 
@@ -34,13 +34,13 @@ class _search_pageState extends State<search_page> {
           searchFilms.clear();
           for (var eachFilm in jsonData['results']) {
             final film = Film(
-              title: eachFilm['title'] ?? 'Not Found', // Varsayılan değer
-              poster_path: eachFilm['poster_path'] ?? notFoundFilmPoster, // Varsayılan değer
-              id: eachFilm['id'] ?? 0, // Varsayılan değer
+              title: eachFilm['title'] ?? 'Not Found',
+              poster_path: eachFilm['poster_path'] ?? notFoundFilmPoster,
+              id: eachFilm['id'] ?? 0,
             );
             searchFilms.add(film);
           }
-          isLoading = false; // Data is loaded, set isLoading to false
+          isLoading = false;
         });
       } else {
         throw Exception('Failed to load films');
@@ -48,7 +48,7 @@ class _search_pageState extends State<search_page> {
     } catch (e) {
       print("An error occurred: $e");
       setState(() {
-        isLoading = false; // Handle error, stop loading
+        isLoading = false;
       });
     }
   }
@@ -88,7 +88,6 @@ class _search_pageState extends State<search_page> {
                   prefixIcon: const Icon(Icons.search, color: Colors.grey),
                 ),
                 onChanged: (value) {
-                  // Arama işlemi için gerekli kodlar
                   userQuery=value;
                 },
               ),
@@ -100,7 +99,6 @@ class _search_pageState extends State<search_page> {
             Center(
               child: ElevatedButton(
                 onPressed: () {
-                  // Arama butonuna tıklandığında yapılacak işlemler
                   getSearchFilm();
                 },
                 style: ElevatedButton.styleFrom(
@@ -123,7 +121,6 @@ class _search_pageState extends State<search_page> {
 
             const SizedBox(height: 20),
 
-            // Results Section (placeholder)
             Expanded(
               child: isLoading
                   ? const Center(
@@ -154,7 +151,7 @@ class _search_pageState extends State<search_page> {
                         MaterialPageRoute(
                           builder: (context) => MoviePage(
                             movieId: film.id.toString(),
-                            username: 'YourUsername', // Replace dynamically
+                            username: 'YourUsername',
                           ),
                         ),
                       );
