@@ -49,6 +49,8 @@ class _RegisterPageState extends State<register_page> {
         'email': _emailController.text.trim(),
         'created_at': Timestamp.now(),
         'filmList': [],
+        'description':"No Description Available",
+        'profilePhoto':"https://static.vecteezy.com/system/resources/thumbnails/008/442/086/small/illustration-of-human-icon-user-symbol-icon-modern-design-on-blank-background-free-vector.jpg"
       });
 
       ScaffoldMessenger.of(context).showSnackBar(

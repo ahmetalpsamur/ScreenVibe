@@ -25,6 +25,7 @@ class _MoviePageState extends State<MoviePage> {
   final TextEditingController _commentController = TextEditingController();
 
   String? displayName;
+  String? profilePhotoUrl;
   final FirebaseAuth _auth = FirebaseAuth.instance;
 
   @override
@@ -53,10 +54,17 @@ class _MoviePageState extends State<MoviePage> {
   }
   Future<void> _loadUserData() async {
     User? currentUser = _auth.currentUser;
+    DocumentSnapshot userDoc = await FirebaseFirestore.instance
+        .collection('users')
+        .doc(currentUser?.uid)
+        .get();
 
     if (currentUser != null) {
       setState(() {
         displayName = currentUser.displayName ?? "Guest";
+        profilePhotoUrl = userDoc['profilePhoto'] ??
+            "https://static.vecteezy.com/system/resources/thumbnails/008/442/086/small/illustration-of-human-icon-user-symbol-icon-modern-design-on-blank-background-free-vector.jpg";
+
       });
       print("Logged-in user's name: $displayName");
 
@@ -64,6 +72,8 @@ class _MoviePageState extends State<MoviePage> {
       print("No user is currently logged in.");
       setState(() {
         displayName = "No user logged in";
+        profilePhotoUrl = userDoc['profilePhoto'] ??
+            "https://static.vecteezy.com/system/resources/thumbnails/008/442/086/small/illustration-of-human-icon-user-symbol-icon-modern-design-on-blank-background-free-vector.jpg";
       });
     }
   }
@@ -81,6 +91,7 @@ class _MoviePageState extends State<MoviePage> {
           return {
             'username': data['username']?.toString() ?? 'Guest',
             'comment': data['comment']?.toString() ?? '',
+            'profilePhotoUrl': data['profilePhotoUrl']?.toString() ?? '', // Add photoURL
           };
         }).toList().cast<Map<String, String>>();
       });
@@ -96,6 +107,7 @@ class _MoviePageState extends State<MoviePage> {
         'comment': comment,
         'movieId': widget.movieId,
         'timestamp': FieldValue.serverTimestamp(),
+        'profilePhotoUrl':profilePhotoUrl
       };
 
       await FirebaseFirestore.instance.collection('comments').add(newComment);
@@ -255,31 +267,42 @@ class _MoviePageState extends State<MoviePage> {
               SizedBox(height: 8),
               ...comments.map((comment) => Padding(
                 padding: const EdgeInsets.symmetric(vertical: 4.0),
-                child: Container(
-                  decoration: BoxDecoration(
-                    color: Colors.grey[800],
-                    borderRadius: BorderRadius.circular(8),
-                  ),
-                  padding: const EdgeInsets.all(12.0),
-                  child: Column(
-                    crossAxisAlignment: CrossAxisAlignment.start,
-                    children: [
-                      Text(
-                        comment['username']!,
-                        style: TextStyle(
-                          fontWeight: FontWeight.bold,
-                          color: Colors.amber,
-                        ),
+                child: Row(
+                  children: [
+                    CircleAvatar(
+                      radius: 20,
+                      backgroundImage: comment['profilePhotoUrl'] != null && comment['profilePhotoUrl']!.isNotEmpty
+                          ? NetworkImage(comment['profilePhotoUrl']!)
+                          : const NetworkImage(
+                        'https://static.vecteezy.com/system/resources/thumbnails/008/442/086/small/illustration-of-human-icon-user-symbol-icon-modern-design-on-blank-background-free-vector.jpg',
                       ),
-                      SizedBox(height: 4),
-                      Text(
-                        comment['comment']!,
-                        style: TextStyle(
-                          color: Colors.white,
+                    ),
+                  Container(
+                    decoration: BoxDecoration(
+                      color: Colors.grey[800],
+                      borderRadius: BorderRadius.circular(8),
+                    ),
+                    padding: const EdgeInsets.all(12.0),
+                    child: Column(
+                      crossAxisAlignment: CrossAxisAlignment.start,
+                      children: [
+                        Text(
+                          comment['username']!,
+                          style: TextStyle(
+                            fontWeight: FontWeight.bold,
+                            color: Colors.amber,
+                          ),
                         ),
-                      ),
-                    ],
-                  ),
+                        SizedBox(height: 4),
+                        Text(
+                          comment['comment']!,
+                          style: TextStyle(
+                            color: Colors.white,
+                          ),
+                        ),
+                      ],
+                    ),
+                  ),]
                 ),
               )),
             ],
