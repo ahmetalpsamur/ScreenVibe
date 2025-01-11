@@ -1,5 +1,4 @@
 import 'dart:convert';
-
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
@@ -7,71 +6,100 @@ import 'package:screen_vibe/API/apikey.dart';
 import 'package:screen_vibe/API/apilink.dart';
 import 'package:screen_vibe/model/film.dart';
 import 'package:screen_vibe/page/movie_page.dart';
-import 'package:screen_vibe/page/home_page.dart';
 import 'package:http/http.dart' as http;
 
 class homeContainer extends StatefulWidget {
   final String title;
+  final List<String>? movieIds; // Optional for user-specific lists
 
-  homeContainer({super.key, required this.title});
+  const homeContainer({super.key, required this.title, this.movieIds});
 
   @override
   _homeContainerState createState() => _homeContainerState();
 }
 
 class _homeContainerState extends State<homeContainer> {
-  List<Film> popularFilms = [];
-  List<Film> nowPlayingFilms = [];
-  List<Film> topRatedFilms = [];
-  List<Film> upcomingFilms = [];
-  List<Film> recommendationFilms = [];
-  List<Film> watchedFilms = [];
+  List<Film> films = [];
   bool isLoading = true;
-  final FirebaseAuth _auth = FirebaseAuth.instance;
-
-
 
   @override
   void initState() {
     super.initState();
-    getWatchedFilms();
-    getPopularFilms();
-    getNowPlayingFilms();
-    getTopRatedFilms();
-    getUpcomingFilms();
-    getRecommendationFilms();
-    User? currentUser = _auth.currentUser;
-
-      if (currentUser != null) {
-        String uid = currentUser.uid;
-        print("Logged-in user's UID: $uid");
-        print(currentUser.displayName);
-      } else {
-        print("No user is currently logged in.");
-      }
-
-
+    if (widget.movieIds != null && widget.movieIds!.isNotEmpty) {
+      fetchMoviesByIds();
+    } else {
+      fetchMoviesByCategory(widget.title);
+    }
   }
 
-  Future<void> getPopularFilms() async {
+  Future<void> fetchMoviesByIds() async {
+    List<Film> fetchedFilms = [];
+    for (var movieId in widget.movieIds!) {
+      final Uri url = Uri.https(
+        hostUrl,
+        '/3/movie/$movieId',
+        {"api_key": apikey},
+      );
+      try {
+        final response = await http.get(url);
+        if (response.statusCode == 200) {
+          final data = jsonDecode(response.body);
+          fetchedFilms.add(Film(
+            title: data['title'] ?? 'Unknown',
+            poster_path: data['poster_path'] ?? '',
+            id: data['id'],
+          ));
+        }
+      } catch (e) {
+        print("Error fetching movie with ID $movieId: $e");
+      }
+    }
+
+    setState(() {
+      films = fetchedFilms;
+      isLoading = false;
+    });
+  }
+
+  Future<void> fetchMoviesByCategory(String category) async {
+    String path;
+    switch (category) {
+      case "Popular":
+        path = popularPathUrl;
+        break;
+      case "Now Playing":
+        path = nowPlayingPathUrl;
+        break;
+      case "Top Rated":
+        path = topRatedPathUrl;
+        break;
+      case "Upcoming":
+        path = upcomingPathUrl;
+        break;
+      case "Recommendation":
+        path = recommendationPathUrl;
+        break;
+      default:
+        return;
+    }
+
     final Uri url = Uri.https(
       hostUrl,
-      popularPathUrl,
+      path,
       {"api_key": apikey},
     );
 
     try {
-      var response = await http.get(url);
+      final response = await http.get(url);
       if (response.statusCode == 200) {
         var jsonData = jsonDecode(response.body);
         setState(() {
           for (var eachFilm in jsonData['results']) {
-            final film = Film(
-              title: eachFilm['title'],
-              poster_path: eachFilm['poster_path'],
-              id: eachFilm['id']
-            );
-            popularFilms.add(film);
+            films.add(Film(
+              title: eachFilm['title'] ?? 'Unknown',
+              poster_path: eachFilm['poster_path'] ?? '',
+              id: eachFilm['id'],
+            ));
           }
           isLoading = false;
         });
@@ -79,174 +107,12 @@ class _homeContainerState extends State<homeContainer> {
         throw Exception('Failed to load films');
       }
     } catch (e) {
-      print("An error occurred: $e");
+      print("Error fetching movies by category: $e");
       setState(() {
         isLoading = false;
       });
     }
   }
-  Future<void> getNowPlayingFilms() async {
-    final Uri url = Uri.https(
-      hostUrl,
-      nowPlayingPathUrl,
-      {"api_key": apikey},
-    );
-
-    try {
-      var response = await http.get(url);
-      if (response.statusCode == 200) {
-        var jsonData = jsonDecode(response.body);
-        setState(() {
-          for (var eachFilm in jsonData['results']) {
-            final film = Film(
-              title: eachFilm['title'],
-              poster_path: eachFilm['poster_path'],
-                id: eachFilm['id']
-            );
-            nowPlayingFilms.add(film);
-          }
-          isLoading = false;
-        });
-      } else {
-        throw Exception('Failed to load films');
-      }
-    } catch (e) {
-      print("An error occurred: $e");
-      setState(() {
-        isLoading = false;
-      });
-    }
-  }
-  Future<void> getTopRatedFilms() async {
-    final Uri url = Uri.https(
-      hostUrl,
-      topRatedPathUrl,
-      {"api_key": apikey},
-    );
-
-    try {
-      var response = await http.get(url);
-      if (response.statusCode == 200) {
-        var jsonData = jsonDecode(response.body);
-        setState(() {
-          for (var eachFilm in jsonData['results']) {
-            final film = Film(
-              title: eachFilm['title'],
-              poster_path: eachFilm['poster_path'],
-                id: eachFilm['id']
-            );
-            topRatedFilms.add(film);
-          }
-          isLoading = false;
-        });
-      } else {
-        throw Exception('Failed to load films');
-      }
-    } catch (e) {
-      print("An error occurred: $e");
-      setState(() {
-        isLoading = false;
-      });
-    }
-  }
-  Future<void> getUpcomingFilms() async {
-    final Uri url = Uri.https(
-      hostUrl,
-      upcomingPathUrl,
-      {"api_key": apikey},
-    );
-
-    try {
-      var response = await http.get(url);
-      if (response.statusCode == 200) {
-        var jsonData = jsonDecode(response.body);
-        setState(() {
-          for (var eachFilm in jsonData['results']) {
-            final film = Film(
-              title: eachFilm['title'],
-              poster_path: eachFilm['poster_path'],
-                id: eachFilm['id']
-            );
-            upcomingFilms.add(film);
-          }
-          isLoading = false;
-        });
-      } else {
-        throw Exception('Failed to load films');
-      }
-    } catch (e) {
-      print("An error occurred: $e");
-      setState(() {
-        isLoading = false;
-      });
-    }
-  }
-  Future<void> getRecommendationFilms() async {
-    final Uri url = Uri.https(
-      hostUrl,
-      recommendationPathUrl,
-      {"api_key": apikey},
-    );
-
-    try {
-      var response = await http.get(url);
-      if (response.statusCode == 200) {
-        var jsonData = jsonDecode(response.body);
-        setState(() {
-          for (var eachFilm in jsonData['results']) {
-            final film = Film(
-              title: eachFilm['title'],
-              poster_path: eachFilm['poster_path'],
-                id: eachFilm['id']
-            );
-            recommendationFilms.add(film);
-          }
-          isLoading = false;
-        });
-      } else {
-        throw Exception('Failed to load films');
-      }
-    } catch (e) {
-      print("An error occurred: $e");
-      setState(() {
-        isLoading = false;
-      });
-    }
-  }
-
-  Future<void> getWatchedFilms() async {
-    final Uri url = Uri.https(
-      hostUrl,
-      recommendationPathUrl,
-      {"api_key": apikey},
-    );
-
-    try {
-      var response = await http.get(url);
-      if (response.statusCode == 200) {
-        var jsonData = jsonDecode(response.body);
-        setState(() {
-          for (var eachFilm in jsonData['results']) {
-            final film = Film(
-                title: eachFilm['title'],
-                poster_path: eachFilm['poster_path'],
-                id: eachFilm['id']
-            );
-            recommendationFilms.add(film);
-          }
-          isLoading = false;
-        });
-      } else {
-        throw Exception('Failed to load films');
-      }
-    } catch (e) {
-      print("An error occurred: $e");
-      setState(() {
-        isLoading = false;
-      });
-    }
-  }
-
 
   displayFilmCard(List<Film> films)
   {
@@ -427,31 +293,23 @@ class _homeContainerState extends State<homeContainer> {
 
   @override
   Widget build(BuildContext context) {
+    if (widget.movieIds != null) {
+      return displayFilmCard(films);
+    }
 
-    //POPULAR MOVIE
-    if(widget.title=="Popular")
-    {
-      return displayFilmCard(popularFilms);
+    switch (widget.title) {
+      case "Popular":
+        return displayFilmCard(films);
+      case "Now Playing":
+        return displayFilmCard(films);
+      case "Top Rated":
+        return displayFilmCard(films);
+      case "Upcoming":
+        return displayFilmCard(films);
+      case "Recommendation":
+        return displayFilmCard(films);
+      default:
+        return const Center(child: Text("Invalid category"));
     }
-    if(widget.title=="Now Playing")
-    {
-      return displayFilmCard(nowPlayingFilms);
-
-    }
-    if(widget.title=="Top Rated")
-    {
-      return displayFilmCard(topRatedFilms);
-    }
-    if(widget.title=="Upcoming")
-    {
-     return displayFilmCard(upcomingFilms);
-
-    }
-    if (widget.title == "Recommendation") {
-     return displayFilmCard(recommendationFilms);
-    }
-    else{
-    return Placeholder();
-  }
   }
 }
