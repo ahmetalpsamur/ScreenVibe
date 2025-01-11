@@ -127,7 +127,7 @@ class _LoginPageState extends State<login_page> {
                     : const Text('Login', style: TextStyle(fontSize: 16.0)),
               ),
               const SizedBox(height: 15.0),
-              GestureDetector(
+              /*GestureDetector(
                 onTap: () {
 
                 },
@@ -138,7 +138,7 @@ class _LoginPageState extends State<login_page> {
                     decoration: TextDecoration.underline,
                   ),
                 ),
-              ),
+              ),*/
               const SizedBox(height: 30.0),
               Row(
                 mainAxisAlignment: MainAxisAlignment.center,
