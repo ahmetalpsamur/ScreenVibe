@@ -6,6 +6,7 @@ import 'package:screen_vibe/API/apikey.dart';
 import 'package:screen_vibe/API/apilink.dart';
 import 'package:http/http.dart' as http;
 import 'package:screen_vibe/model/film.dart';
+import 'package:screen_vibe/page/movie_page.dart';
 
 class search_page extends StatefulWidget {
   const search_page({super.key});
@@ -197,6 +198,17 @@ class _search_pageState extends State<search_page> {
                       icon: const Icon(Icons.add, color: Colors.blue),
                       onPressed: () => _addToMovieList(film.id.toString()),
                     ),
+                    onTap: () {
+                      Navigator.push(
+                        context,
+                        MaterialPageRoute(
+                          builder: (context) => MoviePage(
+                            movieId: film.id.toString(),
+                            username: 'YourUsername', // Replace with the actual username if needed
+                          ),
+                        ),
+                      );
+                    },
                   );
                 },
               ),
