@@ -7,6 +7,8 @@ import 'package:firebase_storage/firebase_storage.dart';
 import 'package:flutter/material.dart';
 import 'package:image_picker/image_picker.dart';
 
+import '../page/login_page.dart';
+
 class profileSection extends StatefulWidget {
   const profileSection({super.key});
 
@@ -259,6 +261,13 @@ class _ProfileSectionState extends State<profileSection> {
     );
   }
 
+  Future<void> _signOut() async {
+    await _auth.signOut();
+    Navigator.pushReplacement(
+      context,
+      MaterialPageRoute(builder: (context) => const login_page()),
+    );
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -292,6 +301,10 @@ class _ProfileSectionState extends State<profileSection> {
           padding: const EdgeInsets.all(16),
           child: Column(
             children: [
+              ElevatedButton(
+                onPressed: _signOut,
+                child: const Text("Sign Out"),
+              ),
               Text(
                 displayName ?? "No name available",
                 style: const TextStyle(fontSize: 18, fontWeight: FontWeight.bold),
