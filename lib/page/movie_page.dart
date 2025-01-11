@@ -1,8 +1,13 @@
+import 'dart:io';
+
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
+import 'package:firebase_storage/firebase_storage.dart';
 import 'package:flutter/material.dart';
 import 'package:http/http.dart' as http;
 import 'dart:convert';
+
+import 'package:image_picker/image_picker.dart';
 
 class MoviePage extends StatefulWidget {
   final String movieId;
@@ -27,6 +32,8 @@ class _MoviePageState extends State<MoviePage> {
   String? displayName;
   String? profilePhotoUrl;
   final FirebaseAuth _auth = FirebaseAuth.instance;
+  String? selectedImagePath;
+  String? newPhotoUrl;
 
   @override
   void initState() {
@@ -91,12 +98,48 @@ class _MoviePageState extends State<MoviePage> {
           return {
             'username': data['username']?.toString() ?? 'Guest',
             'comment': data['comment']?.toString() ?? '',
-            'profilePhotoUrl': data['profilePhotoUrl']?.toString() ?? '', // Add photoURL
+            'profilePhotoUrl': data['profilePhotoUrl']?.toString() ?? '',
+            'imageUrl': data['imageUrl']?.toString() ?? '',  // Ensure image URL is fetched too
           };
-        }).toList().cast<Map<String, String>>();
+        }).toList().cast<Map<String, String>>();  // Cast it to a list of maps with strings
       });
     } catch (e) {
       print("Error fetching comments: $e");
+    }
+  }
+
+
+  Future<void> pickImage() async {
+    final ImagePicker picker = ImagePicker();
+    final XFile? pickedFile = await picker.pickImage(
+      source: ImageSource.gallery,
+      imageQuality: 70,
+    );
+
+    if (pickedFile != null) {
+      setState(() {
+        selectedImagePath = pickedFile.path;
+      });
+
+      try {
+        // Firebase Storage'a yükleme
+        String userId = _auth.currentUser!.uid;
+        Reference storageRef = FirebaseStorage.instance
+            .ref()
+            .child('CommentPhoto/$userId/${DateTime.now().toIso8601String()}');
+        UploadTask uploadTask = storageRef.putFile(File(selectedImagePath!));
+
+        TaskSnapshot snapshot = await uploadTask;
+        String downloadUrl = await snapshot.ref.getDownloadURL();
+        print("Image uploaded successfully. URL: $downloadUrl");
+
+        // Resim URL'sini değişkene ata
+        setState(() {
+          newPhotoUrl = downloadUrl;
+        });
+      } catch (e) {
+        print("Error uploading image: $e");
+      }
     }
   }
 
@@ -107,7 +150,8 @@ class _MoviePageState extends State<MoviePage> {
         'comment': comment,
         'movieId': widget.movieId,
         'timestamp': FieldValue.serverTimestamp(),
-        'profilePhotoUrl':profilePhotoUrl
+        'profilePhotoUrl':profilePhotoUrl,
+        'imageUrl': newPhotoUrl ?? ''
       };
 
       await FirebaseFirestore.instance.collection('comments').add(newComment);
@@ -116,9 +160,11 @@ class _MoviePageState extends State<MoviePage> {
         comments.add({
           'username': displayName ?? 'Guest',
           'comment': comment,
-          'movieId': widget.movieId
+          'movieId': widget.movieId,
+          'imageUrl': newPhotoUrl ?? ''
         });
         _commentController.clear();
+        newPhotoUrl = null;
       });
 
       print("Comment added to Firestore!");
@@ -256,6 +302,14 @@ class _MoviePageState extends State<MoviePage> {
                 child: Text('Post Comment'),
               ),
               SizedBox(height: 16),
+              ElevatedButton(
+                onPressed: pickImage, // Add the image picker button
+                style: ElevatedButton.styleFrom(
+                  backgroundColor: Colors.amber,
+                ),
+                child: Text('Pick Image'),
+              ),
+              SizedBox(height: 16),
               Text(
                 'Comments:',
                 style: TextStyle(
@@ -299,7 +353,17 @@ class _MoviePageState extends State<MoviePage> {
                           style: TextStyle(
                             color: Colors.white,
                           ),
+
+
                         ),
+                        SizedBox(height: 4),
+                        if (comment['imageUrl'] != null && comment['imageUrl']!.isNotEmpty)
+                          Image.network(
+                            comment['imageUrl']!,
+                            width: 200,  // Set a maximum width
+                            height: 150, // Set a maximum height
+                            fit: BoxFit.cover,  // Ensure the image doesn't stretch
+                          ),
                       ],
                     ),
                   ),]
